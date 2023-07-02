@@ -10,6 +10,7 @@ import com.example.postwebapp.exception.ResourceNotFoundException;
 import com.example.postwebapp.repo.CommentRepository;
 import com.example.postwebapp.repo.PostRepository;
 import com.example.postwebapp.service.CommentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,25 +21,19 @@ import java.util.stream.Collectors;
 public class CommentServiceImp implements CommentService {
     private CommentRepository commentRepository;
     private PostRepository postRepository;
+    private ModelMapper mapper;
 
-    public CommentServiceImp(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentServiceImp(CommentRepository commentRepository, PostRepository postRepository, ModelMapper mapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.mapper=mapper;
     }
     private CommentDto mapToDTO(Comment comment){
-        CommentDto commentDto = new CommentDto();
-        commentDto.setBody(comment.getBody());
-        commentDto.setId(comment.getId());
-        commentDto.setName(comment.getName());
-        commentDto.setEmail(comment.getEmail());
+        CommentDto commentDto = mapper.map(comment,CommentDto.class);
         return commentDto;
     }
     private Comment mapToEntity(CommentDto commentDto){
-        Comment comment = new Comment();
-        comment.setBody(commentDto.getBody());
-        comment.setId(commentDto.getId());
-        comment.setName(commentDto.getName());
-        comment.setEmail(commentDto.getEmail());
+        Comment comment = mapper.map(commentDto,Comment.class);
         return comment;
     }
     private boolean commentPostMatch(Post post , Comment comment){

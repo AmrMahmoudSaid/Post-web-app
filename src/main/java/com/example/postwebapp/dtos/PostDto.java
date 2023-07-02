@@ -2,6 +2,8 @@ package com.example.postwebapp.dtos;
 
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 public class PostDto {
     private long id;
@@ -10,4 +12,5 @@ public class PostDto {
     private String description;
 
     private String content;
+    private Set<CommentDto> comments;
 }

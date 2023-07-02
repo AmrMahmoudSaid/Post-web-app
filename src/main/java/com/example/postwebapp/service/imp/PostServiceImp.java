@@ -6,6 +6,7 @@ import com.example.postwebapp.entity.Post;
 import com.example.postwebapp.exception.ResourceNotFoundException;
 import com.example.postwebapp.repo.PostRepository;
 import com.example.postwebapp.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,23 +20,25 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImp implements PostService {
     private PostRepository postRepository;
+    private ModelMapper modelMapper;
 
-    public PostServiceImp(PostRepository postRepository) {
+    public PostServiceImp(PostRepository postRepository,ModelMapper modelMapper) {
+        this.modelMapper=modelMapper;
         this.postRepository = postRepository;
     }
     private PostDto mapToDTO(Post p ){
-        PostDto postResponse  =new PostDto();
-        postResponse.setContent(p.getContent());
-        postResponse.setDescription(p.getDescription());
-        postResponse.setTitle(p.getTitle());
-        postResponse.setId(p.getId());
+        PostDto postResponse  =modelMapper.map(p,PostDto.class);
+//        postResponse.setContent(p.getContent());
+//        postResponse.setDescription(p.getDescription());
+//        postResponse.setTitle(p.getTitle());
+//        postResponse.setId(p.getId());
         return postResponse;
     }
     private Post mapToEntity(PostDto p){
-        Post post = new Post();
-        post.setContent(p.getContent());
-        post.setDescription(p.getDescription());
-        post.setTitle(p.getTitle());
+        Post post = modelMapper.map(p,Post.class);
+//        post.setContent(p.getContent());
+//        post.setDescription(p.getDescription());
+//        post.setTitle(p.getTitle());
         return post;
     }
     @Override
