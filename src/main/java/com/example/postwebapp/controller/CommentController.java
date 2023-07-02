@@ -3,6 +3,7 @@ package com.example.postwebapp.controller;
 import com.example.postwebapp.dtos.CommentDto;
 import com.example.postwebapp.dtos.CommentResponse;
 import com.example.postwebapp.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class CommentController {
         this.commentService = commentService;
     }
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentDto> createComment(@PathVariable(name = "postId") Long postId , @RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentDto> createComment(@PathVariable(name = "postId") Long postId ,@Valid @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(postId,commentDto), HttpStatus.CREATED);
     }
     @GetMapping("/posts/{postId}/comments")
@@ -32,7 +33,7 @@ public class CommentController {
     @PutMapping("/posts/{postId}/comments/{commentId}")
     ResponseEntity<CommentDto> updatePostById(
             @PathVariable(name = "postId") Long postId ,
-            @PathVariable(name = "commentId") Long commentId , @RequestBody CommentDto commentDto){
+            @PathVariable(name = "commentId") Long commentId , @Valid @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.updateCommentById(postId,commentId,commentDto),HttpStatus.OK);
     }
     @DeleteMapping("/posts/{postId}/comments/{commentId}")
