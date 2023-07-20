@@ -39,6 +39,11 @@ public class PostController {
     public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") Long id){
         return  ResponseEntity.ok(postService.getPostById(id));
     }
+
+    @GetMapping("/{category_id}")
+    public ResponseEntity<List<PostDto>> getAllPostByCategoryId(@PathVariable("category_id") Long id){
+        return ResponseEntity.ok(postService.getAllPostByCategoryId(id));
+    }
     @PreAuthorize("hasRole('ADMIN')")
 
     @PutMapping("/update-post/{id}")
@@ -46,7 +51,6 @@ public class PostController {
         return  ResponseEntity.ok(postService.updatePost(postDto,id));
     }
     @PreAuthorize("hasRole('ADMIN')")
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") Long id){
         postService.deletePostById(id);
